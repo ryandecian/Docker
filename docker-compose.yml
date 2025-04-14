@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  db_wordpress:
+    image: mysql:8.0
+    container_name: db_wordpress
+    restart: always # Permet de redémarrer le conteneur automatiquement en cas de plantage
+    environment:
+      MYSQL_ROOT_PASSWORD: "e248*s7Mx!wbzdJ#$PWBg3rTFj"
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: "e248*s7Mx!wbzdJ#$PWBg3rTFj"
+    volumes: # Chemin absolu
+      - /c/Users/ryand/Serveur/Dev Web/Wild Code School/CDA/Docker/db_wordpress:/var/lib/mysql
+    networks:
+      - backend
+
+  wordpress:
+    depends_on: # Assure que le conteneur de la base de données est démarré avant le conteneur WordPress
+      - db_wordpress
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always # Permet de redémarrer le conteneur automatiquement en cas de plantage
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: "e248*s7Mx!wbzdJ#$PWBg3rTFj"
+      WORDPRESS_DB_NAME: wordpress
+    volumes: # Chemin absolu
+      - /c/Users/ryand/Serveur/Dev Web/Wild Code School/CDA/Docker/wordpress:/var/www/html
+    networks:
+      - backend
+      - frontend
+
+networks:
+  backend:
+  frontend:
